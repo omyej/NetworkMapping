@@ -4,8 +4,8 @@
 	<lastchange></lastchange>
 	<system>
 		<optimization>normal</optimization>
-		<hostname>Firewall-1</hostname>
-		<domain>development.arpa</domain>
+		<hostname>Firewall-2</hostname>
+		<domain>research.arpa</domain>
 		<group>
 			<name>all</name>
 			<description><![CDATA[All Users]]></description>
@@ -28,7 +28,7 @@
 			<groupname>admins</groupname>
 			<uid>0</uid>
 			<priv>user-shell-access</priv>
-			<bcrypt-hash>$2y$10$NI1t2zFKfwdgvAAUU.i8keoBA0vYptP.9OOXvsfiwU6026NWUtjPS</bcrypt-hash>
+			<bcrypt-hash>$2y$10$Pk75mIuPVy3oI0h0bg1SKeNGSYAT6TPacohxFjkfxsFE89vL44tCe</bcrypt-hash>
 		</user>
 		<nextuid>2000</nextuid>
 		<nextgid>2000</nextgid>
@@ -36,7 +36,7 @@
 		<webgui>
 			<protocol>http</protocol>
 			<loginautocomplete></loginautocomplete>
-			<ssl-certref>653bc5684c55a</ssl-certref>
+			<ssl-certref>653bc9b80ea89</ssl-certref>
 			<althostnames></althostnames>
 			<dashboardcolumns>2</dashboardcolumns>
 			<webguicss>pfSense.css</webguicss>
@@ -67,36 +67,21 @@
 		<wan>
 			<enable></enable>
 			<if>vtnet0</if>
-			<descr><![CDATA[WAN]]></descr>
-			<ipaddr>dhcp</ipaddr>
-			<dhcphostname></dhcphostname>
-			<alias-address></alias-address>
-			<alias-subnet>32</alias-subnet>
-			<dhcprejectfrom></dhcprejectfrom>
-			<adv_dhcp_pt_timeout></adv_dhcp_pt_timeout>
-			<adv_dhcp_pt_retry></adv_dhcp_pt_retry>
-			<adv_dhcp_pt_select_timeout></adv_dhcp_pt_select_timeout>
-			<adv_dhcp_pt_reboot></adv_dhcp_pt_reboot>
-			<adv_dhcp_pt_backoff_cutoff></adv_dhcp_pt_backoff_cutoff>
-			<adv_dhcp_pt_initial_interval></adv_dhcp_pt_initial_interval>
-			<adv_dhcp_pt_values>SavedCfg</adv_dhcp_pt_values>
-			<adv_dhcp_send_options></adv_dhcp_send_options>
-			<adv_dhcp_request_options></adv_dhcp_request_options>
-			<adv_dhcp_required_options></adv_dhcp_required_options>
-			<adv_dhcp_option_modifiers></adv_dhcp_option_modifiers>
-			<adv_dhcp_config_advanced></adv_dhcp_config_advanced>
-			<adv_dhcp_config_file_override></adv_dhcp_config_file_override>
-			<adv_dhcp_config_file_override_path></adv_dhcp_config_file_override_path>
-			<ipaddrv6>dhcp6</ipaddrv6>
+			<ipaddr>192.168.1.2</ipaddr>
+			<ipaddrv6></ipaddrv6>
+			<subnet>30</subnet>
+			<gateway>WANGW</gateway>
+			<media></media>
+			<mediaopt></mediaopt>
 			<dhcp6-duid></dhcp6-duid>
 			<dhcp6-ia-pd-len>0</dhcp6-ia-pd-len>
-			<adv_dhcp6_prefix_selected_interface>wan</adv_dhcp6_prefix_selected_interface>
-			<spoofmac></spoofmac>
+			<subnetv6></subnetv6>
+			<gatewayv6></gatewayv6>
 		</wan>
 		<lan>
 			<enable></enable>
 			<if>vtnet1</if>
-			<ipaddr>192.168.1.1</ipaddr>
+			<ipaddr>100.68.26.1</ipaddr>
 			<subnet>30</subnet>
 			<ipaddrv6></ipaddrv6>
 			<subnetv6></subnetv6>
@@ -111,37 +96,38 @@
 			<if>vtnet2</if>
 			<descr><![CDATA[Management]]></descr>
 			<enable></enable>
-			<ipaddr>22.33.44.1</ipaddr>
+			<ipaddr>22.33.44.2</ipaddr>
 			<subnet>24</subnet>
 			<spoofmac></spoofmac>
 		</opt1>
+		<opt2>
+			<descr><![CDATA[Security]]></descr>
+			<if>vtnet3</if>
+			<enable></enable>
+			<spoofmac></spoofmac>
+			<ipaddr>198.111.10.1</ipaddr>
+			<subnet>24</subnet>
+		</opt2>
 	</interfaces>
 	<staticroutes>
 		<route>
 			<network>100.68.0.0/16</network>
-			<gateway>WAN_DHCP</gateway>
+			<gateway>WANGW</gateway>
 			<descr></descr>
 		</route>
 		<route>
 			<network>10.65.0.0/16</network>
-			<gateway>WAN_DHCP</gateway>
+			<gateway>WANGW</gateway>
 			<descr></descr>
 		</route>
 	</staticroutes>
 	<dhcpd>
 		<lan>
 			<range>
-				<from>192.168.1.2</from>
-				<to>192.168.1.2</to>
+				<from>198.111.1.2</from>
+				<to>198.111.1.2</to>
 			</range>
 		</lan>
-		<opt1>
-			<range>
-				<from>22.33.44.100</from>
-				<to>22.33.44.200</to>
-			</range>
-			<enable></enable>
-		</opt1>
 	</dhcpd>
 	<dhcpdv6>
 		<lan>
@@ -176,78 +162,187 @@
 				<any></any>
 			</source>
 			<destination>
-				<address>172.16.1.148</address>
+				<network>(self)</network>
 				<port>3333</port>
 			</destination>
 			<ipprotocol>inet</ipprotocol>
 			<protocol>tcp</protocol>
-			<target>192.168.1.2</target>
-			<local-port>3333</local-port>
-			<interface>wan</interface>
-			<descr></descr>
-			<associated-rule-id>nat_6554ec46604b15.45384266</associated-rule-id>
-			<updated>
-				<time>1700064326</time>
-				<username><![CDATA[admin@172.16.1.145 (Local Database)]]></username>
-			</updated>
-			<created>
-				<time>1700064326</time>
-				<username><![CDATA[admin@172.16.1.145 (Local Database)]]></username>
-			</created>
-		</rule>
-		<rule>
-			<source>
-				<any></any>
-			</source>
-			<destination>
-				<network>(self)</network>
-				<port>2221</port>
-			</destination>
-			<ipprotocol>inet</ipprotocol>
-			<protocol>tcp</protocol>
-			<target>192.168.1.2</target>
+			<target>198.111.10.25</target>
 			<local-port>22</local-port>
 			<interface>wan</interface>
 			<descr></descr>
-			<associated-rule-id>nat_655b7bf93fbcb0.67355499</associated-rule-id>
+			<associated-rule-id>nat_6554ec8e2aee57.52487697</associated-rule-id>
 			<updated>
-				<time>1700494329</time>
-				<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
+				<time>1700064398</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
 			</updated>
 			<created>
-				<time>1700494329</time>
-				<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
-			</created>
-		</rule>
-		<rule>
-			<source>
-				<any></any>
-			</source>
-			<destination>
-				<network>(self)</network>
-				<port>2223</port>
-			</destination>
-			<ipprotocol>inet</ipprotocol>
-			<protocol>tcp</protocol>
-			<target>100.68.26.2</target>
-			<local-port>22</local-port>
-			<interface>wan</interface>
-			<descr></descr>
-			<associated-rule-id>nat_655b7ec1abb909.97620783</associated-rule-id>
-			<updated>
-				<time>1700495041</time>
-				<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
-			</updated>
-			<created>
-				<time>1700495041</time>
-				<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
+				<time>1700064398</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
 			</created>
 		</rule>
 	</nat>
 	<filter>
 		<rule>
 			<id></id>
-			<tracker>1698422575</tracker>
+			<tracker>1700063370</tracker>
+			<type>pass</type>
+			<interface>opt2</interface>
+			<ipprotocol>inet</ipprotocol>
+			<tag></tag>
+			<tagged></tagged>
+			<max></max>
+			<max-src-nodes></max-src-nodes>
+			<max-src-conn></max-src-conn>
+			<max-src-states></max-src-states>
+			<statetimeout></statetimeout>
+			<statetype><![CDATA[keep state]]></statetype>
+			<os></os>
+			<source>
+				<any></any>
+			</source>
+			<destination>
+				<any></any>
+			</destination>
+			<descr></descr>
+			<updated>
+				<time>1700063370</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</updated>
+			<created>
+				<time>1700063370</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</created>
+		</rule>
+		<rule>
+			<id></id>
+			<tracker>1700063073</tracker>
+			<type>pass</type>
+			<interface>wan</interface>
+			<ipprotocol>inet</ipprotocol>
+			<tag></tag>
+			<tagged></tagged>
+			<max></max>
+			<max-src-nodes></max-src-nodes>
+			<max-src-conn></max-src-conn>
+			<max-src-states></max-src-states>
+			<statetimeout></statetimeout>
+			<statetype><![CDATA[keep state]]></statetype>
+			<os></os>
+			<source>
+				<any></any>
+			</source>
+			<destination>
+				<any></any>
+			</destination>
+			<descr></descr>
+			<updated>
+				<time>1700063073</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</updated>
+			<created>
+				<time>1700063073</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</created>
+		</rule>
+		<rule>
+			<id></id>
+			<tracker>1698422783</tracker>
+			<type>pass</type>
+			<interface>wan</interface>
+			<ipprotocol>inet</ipprotocol>
+			<tag></tag>
+			<tagged></tagged>
+			<max></max>
+			<max-src-nodes></max-src-nodes>
+			<max-src-conn></max-src-conn>
+			<max-src-states></max-src-states>
+			<statetimeout></statetimeout>
+			<statetype><![CDATA[keep state]]></statetype>
+			<os></os>
+			<source>
+				<any></any>
+			</source>
+			<destination>
+				<any></any>
+			</destination>
+			<descr></descr>
+			<updated>
+				<time>1698422783</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</updated>
+			<created>
+				<time>1698422783</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</created>
+			<disabled></disabled>
+		</rule>
+		<rule>
+			<id></id>
+			<tracker>1700063082</tracker>
+			<type>pass</type>
+			<interface>lan</interface>
+			<ipprotocol>inet</ipprotocol>
+			<tag></tag>
+			<tagged></tagged>
+			<max></max>
+			<max-src-nodes></max-src-nodes>
+			<max-src-conn></max-src-conn>
+			<max-src-states></max-src-states>
+			<statetimeout></statetimeout>
+			<statetype><![CDATA[keep state]]></statetype>
+			<os></os>
+			<source>
+				<any></any>
+			</source>
+			<destination>
+				<any></any>
+			</destination>
+			<descr></descr>
+			<updated>
+				<time>1700063082</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</updated>
+			<created>
+				<time>1700063082</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</created>
+		</rule>
+		<rule>
+			<id></id>
+			<tracker>1698422964</tracker>
+			<type>pass</type>
+			<interface>lan</interface>
+			<ipprotocol>inet</ipprotocol>
+			<tag></tag>
+			<tagged></tagged>
+			<max></max>
+			<max-src-nodes></max-src-nodes>
+			<max-src-conn></max-src-conn>
+			<max-src-states></max-src-states>
+			<statetimeout></statetimeout>
+			<statetype><![CDATA[keep state]]></statetype>
+			<os></os>
+			<source>
+				<any></any>
+			</source>
+			<destination>
+				<network>lan</network>
+			</destination>
+			<descr></descr>
+			<updated>
+				<time>1698422964</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</updated>
+			<created>
+				<time>1698422964</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</created>
+			<disabled></disabled>
+		</rule>
+		<rule>
+			<id></id>
+			<tracker>1698438262</tracker>
 			<type>pass</type>
 			<interface>opt1</interface>
 			<ipprotocol>inet</ipprotocol>
@@ -267,20 +362,20 @@
 				<any></any>
 			</destination>
 			<descr></descr>
-			<updated>
-				<time>1698422575</time>
-				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
-			</updated>
 			<created>
-				<time>1698422575</time>
+				<time>1698438262</time>
 				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
 			</created>
+			<updated>
+				<time>1700063096</time>
+				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</updated>
 		</rule>
 		<rule>
 			<id></id>
-			<tracker>1698421743</tracker>
+			<tracker>1698451107</tracker>
 			<type>pass</type>
-			<interface>wan</interface>
+			<interface>opt2</interface>
 			<ipprotocol>inet</ipprotocol>
 			<tag></tag>
 			<tagged></tagged>
@@ -291,78 +386,23 @@
 			<statetimeout></statetimeout>
 			<statetype><![CDATA[keep state]]></statetype>
 			<os></os>
+			<protocol>tcp/udp</protocol>
 			<source>
-				<any></any>
+				<network>opt2</network>
 			</source>
 			<destination>
-				<any></any>
+				<network>wan</network>
 			</destination>
 			<descr></descr>
-			<updated>
-				<time>1698421743</time>
-				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
-			</updated>
 			<created>
-				<time>1698421743</time>
+				<time>1698451107</time>
 				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
 			</created>
-		</rule>
-		<rule>
-			<id></id>
-			<tracker>1698422544</tracker>
-			<type>pass</type>
-			<interface>lan</interface>
-			<ipprotocol>inet</ipprotocol>
-			<tag></tag>
-			<tagged></tagged>
-			<max></max>
-			<max-src-nodes></max-src-nodes>
-			<max-src-conn></max-src-conn>
-			<max-src-states></max-src-states>
-			<statetimeout></statetimeout>
-			<statetype><![CDATA[keep state]]></statetype>
-			<os></os>
-			<source>
-				<any></any>
-			</source>
-			<destination>
-				<any></any>
-			</destination>
-			<descr></descr>
 			<updated>
-				<time>1698422544</time>
+				<time>1698452857</time>
 				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
 			</updated>
-			<created>
-				<time>1698422544</time>
-				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
-			</created>
-		</rule>
-		<rule>
-			<type>pass</type>
-			<ipprotocol>inet</ipprotocol>
-			<descr><![CDATA[Default allow LAN to any rule]]></descr>
-			<interface>lan</interface>
-			<tracker>0100000101</tracker>
-			<source>
-				<network>lan</network>
-			</source>
-			<destination>
-				<any></any>
-			</destination>
-		</rule>
-		<rule>
-			<type>pass</type>
-			<ipprotocol>inet6</ipprotocol>
-			<descr><![CDATA[Default allow LAN IPv6 to any rule]]></descr>
-			<interface>lan</interface>
-			<tracker>0100000102</tracker>
-			<source>
-				<network>lan</network>
-			</source>
-			<destination>
-				<any></any>
-			</destination>
+			<disabled></disabled>
 		</rule>
 		<rule>
 			<source>
@@ -372,59 +412,22 @@
 			<ipprotocol>inet</ipprotocol>
 			<protocol>tcp</protocol>
 			<destination>
-				<address>192.168.1.2</address>
-				<port>3333</port>
-			</destination>
-			<descr><![CDATA[NAT ]]></descr>
-			<associated-rule-id>nat_6554ec46604b15.45384266</associated-rule-id>
-			<tracker>1700064326</tracker>
-			<created>
-				<time>1700064326</time>
-				<username><![CDATA[NAT Port Forward]]></username>
-			</created>
-		</rule>
-		<rule>
-			<source>
-				<any></any>
-			</source>
-			<interface>wan</interface>
-			<ipprotocol>inet</ipprotocol>
-			<protocol>tcp</protocol>
-			<destination>
-				<address>192.168.1.2</address>
+				<address>198.111.10.25</address>
 				<port>22</port>
 			</destination>
 			<descr><![CDATA[NAT ]]></descr>
-			<associated-rule-id>nat_655b7bf93fbcb0.67355499</associated-rule-id>
-			<tracker>1700494329</tracker>
+			<associated-rule-id>nat_6554ec8e2aee57.52487697</associated-rule-id>
+			<tracker>1700064398</tracker>
 			<created>
-				<time>1700494329</time>
-				<username><![CDATA[NAT Port Forward]]></username>
-			</created>
-		</rule>
-		<rule>
-			<source>
-				<any></any>
-			</source>
-			<interface>wan</interface>
-			<ipprotocol>inet</ipprotocol>
-			<protocol>tcp</protocol>
-			<destination>
-				<address>100.68.26.2</address>
-				<port>22</port>
-			</destination>
-			<descr><![CDATA[NAT ]]></descr>
-			<associated-rule-id>nat_655b7ec1abb909.97620783</associated-rule-id>
-			<tracker>1700495041</tracker>
-			<created>
-				<time>1700495041</time>
+				<time>1700064398</time>
 				<username><![CDATA[NAT Port Forward]]></username>
 			</created>
 		</rule>
 		<separator>
-			<opt1></opt1>
 			<wan></wan>
 			<lan></lan>
+			<opt1></opt1>
+			<opt2></opt2>
 		</separator>
 	</filter>
 	<shaper></shaper>
@@ -545,25 +548,44 @@
 		<hideversion></hideversion>
 		<dnssecstripped></dnssecstripped>
 	</unbound>
-	<vlans></vlans>
+	<vlans>
+		<vlan>
+			<if>vtnet3</if>
+			<tag>10</tag>
+			<pcp></pcp>
+			<descr></descr>
+			<vlanif>vtnet3.10</vlanif>
+		</vlan>
+	</vlans>
 	<qinqs></qinqs>
 	<revision>
-		<time>1700495041</time>
-		<description><![CDATA[admin@172.16.1.201 (Local Database): Firewall: NAT: Port Forward - saved/edited a port forward rule.]]></description>
-		<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
+		<time>1700078637</time>
+		<description><![CDATA[(system): Enabled SSHD from console menu.]]></description>
+		<username><![CDATA[(system)]]></username>
 	</revision>
-	<gateways></gateways>
+	<gateways>
+		<gateway_item>
+			<interface>wan</interface>
+			<gateway>192.168.1.1</gateway>
+			<name>WANGW</name>
+			<weight>1</weight>
+			<ipprotocol>inet</ipprotocol>
+			<interval></interval>
+			<descr><![CDATA[Interface wan Gateway]]></descr>
+		</gateway_item>
+		<defaultgw4>WANGW</defaultgw4>
+	</gateways>
 	<captiveportal></captiveportal>
 	<dnsmasq></dnsmasq>
 	<ntpd>
 		<gps></gps>
 	</ntpd>
 	<cert>
-		<refid>653bc5684c55a</refid>
-		<descr><![CDATA[webConfigurator default (653bc5684c55a)]]></descr>
+		<refid>653bc9b80ea89</refid>
+		<descr><![CDATA[webConfigurator default (653bc9b80ea89)]]></descr>
 		<type>server</type>
-		<crt>LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVsRENDQTN5Z0F3SUJBZ0lJZlRFbnpzQXg4VHd3RFFZSktvWklodmNOQVFFTEJRQXdXakU0TURZR0ExVUUKQ2hNdmNHWlRaVzV6WlNCM1pXSkRiMjVtYVdkMWNtRjBiM0lnVTJWc1ppMVRhV2R1WldRZ1EyVnlkR2xtYVdOaApkR1V4SGpBY0JnTlZCQU1URlhCbVUyVnVjMlV0TmpVelltTTFOamcwWXpVMVlUQWVGdzB5TXpFd01qY3hOREV5Ck5UWmFGdzB5TkRFeE1qZ3hOREV5TlRaYU1Gb3hPREEyQmdOVkJBb1RMM0JtVTJWdWMyVWdkMlZpUTI5dVptbG4KZFhKaGRHOXlJRk5sYkdZdFUybG5ibVZrSUVObGNuUnBabWxqWVhSbE1SNHdIQVlEVlFRREV4VndabE5sYm5ObApMVFkxTTJKak5UWTROR00xTldFd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUURnClVIRGJFNDMyangzc1NZakhBb1hXUlhibGFWM0N0K3hUbkxXbUhKblNDd3ZwVm13STVOdStPaUhVMXFpQkZhSjgKVjdXUjVDczBoaEhyRXRTL2pjVVEySmMxb01ZNkZFN1dEcUxEYlJSUWsxb0s1cUJDczRnYitPNFRDM2FNSkg0eAprbjRCN2REQmNHdDFmaWFuc3BGQTRlWWhiSUtPSTgzL2hOcHBlUU5QaGlaQ0NscWkwZmlRcDduRjh6WS9YUUhrCklPL21ncTFlTE9YR21ickhVZWpBa2xtL0FRQmsvN3A2dWVQRUdxNWZaSVJabm9Od21NNzYvWUswSmp4TWRkN0UKcnczWUhQMFZlNlZwbE0wUU9xbXFQWnlCYzU5M1JPdjRQQ285UWZmUjdJVWlXbGpTMmJOb3JtSGFzd0xOOEtFMgphVlZIdHhrNTlQeUNlVHdQNlBRYkFnTUJBQUdqZ2dGY01JSUJXREFKQmdOVkhSTUVBakFBTUJFR0NXQ0dTQUdHCitFSUJBUVFFQXdJR1FEQUxCZ05WSFE4RUJBTUNCYUF3TXdZSllJWklBWWI0UWdFTkJDWVdKRTl3Wlc1VFUwd2cKUjJWdVpYSmhkR1ZrSUZObGNuWmxjaUJEWlhKMGFXWnBZMkYwWlRBZEJnTlZIUTRFRmdRVVVJT09NZVlJekM5KwpsQlRHWTd2RWoyQkZQY3N3Z1lzR0ExVWRJd1NCZ3pDQmdJQVVVSU9PTWVZSXpDOStsQlRHWTd2RWoyQkZQY3VoClhxUmNNRm94T0RBMkJnTlZCQW9UTDNCbVUyVnVjMlVnZDJWaVEyOXVabWxuZFhKaGRHOXlJRk5sYkdZdFUybG4KYm1Wa0lFTmxjblJwWm1sallYUmxNUjR3SEFZRFZRUURFeFZ3WmxObGJuTmxMVFkxTTJKak5UWTROR00xTldHQwpDSDB4Sjg3QU1mRThNQ2NHQTFVZEpRUWdNQjRHQ0NzR0FRVUZCd01CQmdnckJnRUZCUWNEQWdZSUt3WUJCUVVJCkFnSXdJQVlEVlIwUkJCa3dGNElWY0daVFpXNXpaUzAyTlROaVl6VTJPRFJqTlRWaE1BMEdDU3FHU0liM0RRRUIKQ3dVQUE0SUJBUUJZUlpVNlc5c3VsdG1SdHU3RURMYW1yZDlzYnlrNkpqdnc2dXJ2RlMzVDJvSFFYbk93YzhkTQpyTzNSbVhsdENINzhvUnpqa0dnZUFWRTZtQjFpU2c1Q0NWZ2ZPTEMvZ1M4RWlQNVBPZ09YU0Mvc252eGdzclNtCjZEOTNIYzhubGlvQWl1U25ORFpVL3pxcVVyajJKc2ZjVWRORWpZRHJXTXNzNVBIR01sVjBXOWNVQTFSN0h4VVgKclNId2N4NE5oTmEySXlENTBNL1pjOHZNLzVSdjkwWCtwcjFQZFQ0aXJ1Zmd5elVDTkx6ekFBMEM5U1NDOWlwZwpiR2xzTDA4d2c0SEtNNTE0ZENrcUtUaDkwcFZyVmJmdGVaUXlPb1FZMzJzTkpuanA1dHZ3REd2V1hTNVRMNWhLCjVtRisvNVkwMkErRFlCVTc4bWh6bGxzTkJZcnR6UWJECi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K</crt>
-		<prv>LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV3QUlCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktvd2dnU21BZ0VBQW9JQkFRRGdVSERiRTQzMmp4M3MKU1lqSEFvWFdSWGJsYVYzQ3QreFRuTFdtSEpuU0N3dnBWbXdJNU51K09pSFUxcWlCRmFKOFY3V1I1Q3MwaGhIcgpFdFMvamNVUTJKYzFvTVk2RkU3V0RxTERiUlJRazFvSzVxQkNzNGdiK080VEMzYU1KSDR4a240QjdkREJjR3QxCmZpYW5zcEZBNGVZaGJJS09JODMvaE5wcGVRTlBoaVpDQ2xxaTBmaVFwN25GOHpZL1hRSGtJTy9tZ3ExZUxPWEcKbWJySFVlakFrbG0vQVFCay83cDZ1ZVBFR3E1ZlpJUlpub053bU03Ni9ZSzBKanhNZGQ3RXJ3M1lIUDBWZTZWcApsTTBRT3FtcVBaeUJjNTkzUk92NFBDbzlRZmZSN0lVaVdsalMyYk5vcm1IYXN3TE44S0UyYVZWSHR4azU5UHlDCmVUd1A2UFFiQWdNQkFBRUNnZ0VCQUwwd3UyN2JHRkpMTlRhMGNxcy9Jbml0ai9GQUpEZDEvdG9xZ3o2K1FySlkKWk15QitvNnB6L2lxZVJ4VmpEdUxic2NuQnRvc3NwQVRRQXVmajFhY2tRaDdWVldDNjQzUzBRZFR3czNITTJvZQpUY1NCN2NzME51azQxRHUxNEYrazY5YU5zcitYd0FsVzh4dGVzZVdoQTBmUS85TlMvTzQ3bnFRVGZrK1ZKRWl0CnpVNUp4Uzl4M1dnSjdPcTZ0dGphUEova2o3SkQ5UDZ5Q1Zrd1I3ZVUvaDN5a3BURG9aRW5CVFhQRHdoSFlmdlIKZjIxbHdtUHJxVnBxV3BkbjlCS1p5MTdMVFlGTmtnRjJ4Z2JxbkpWUzRZbndSUmVZNENtUVBoOFFadlJaTkY3RAp5K3RLbVg1SEd2UWtjWnBIalREZHVxMUVNbEkzTmF1QXdJS0plZXFYL2ZrQ2dZRUE4K0JCM3ZITGg3SHlNaG9nCm51Qkhtb1hrOHZuTi9IL09mN1Z6THA5T0RBYzcvMkZPc2NHbTMrU3YrV2pTTzJoZ1RYMXpRVGp5WDIvQ2hieEcKdlpPcDZlNTRIaTE2b3UzMUlrek9BYkVDN0tZVmdMVjdFNEtXYzFsd09NNjQzWUF4Q0NNTGJDbDZLTDhreDZyYwpNN1ZYWEF3d095NFRtemZmUFN3T1E3TFg0RmNDZ1lFQTYzYzU0cG1YRU9LSFNTZFd2WncwSXEzcno3RFBSMHNJCjdSelQrWkxROWNMMEdhc256d0N0RlU3cHl2b3oyaUgrVnk3WDBOLzVHLzkyQ3Y5eWpIT01maHZBZEdLcjIrWGcKWkNoYlQ3ekJkNXRBZ2JBYnpVeEtxQzI1TitLM3crNGNSWmloOVAxS2krYitnM3d1cEIxb0RmVjBIeVJPa1NWNApzQTE2YWV1VVg5MENnWUVBb2NsVFNhalU0aGQ5MmhrVkxQRVM3NE1HQ044SjlRbUFuNTVyWkRHUTRFL29VSnBvClQycHQzemhpT2E1OVVhWUR4VVNGTW02cDlBQTdadWNwY3RqRUx3bmhxL3QxMFNMVnJjU1FJZlVoUUlkSjJwSUsKclQzRHU1Qkk3NWJNY3oxNHliSWVBTXBmWFNxNUpyREYxcFBsK1kyb2JZbzZ2WTFLVHRXc1BPTW5iWThDZ1lFQQpyV2Y0Y1RDN1Yrdjd4WnY2L1ZoejdMWTQyNU5Ta3lablJIZmVoQVhqYlpwTk9qb1o3eENJWnhEZWpHVUdtclkrCklPYVdlWFQ0ZCs0Q2VNYjNEUWhyaHRQWlA5MEt3NzdmS2VPdW0ySmUrRDZWbXV5ZkRPb0tjU0I3THZVQWNJS0MKdjU1UVo2UEJxcFpMQ1hvQ3Ywb0l2MzdzTGFNSFdVMUhQQ0F3N3FCWGZPRUNnWUVBdklFRElFbnl4bjBMZUxMNQp0ZWFxVU55enNFWlpzRzJMQ0NVODRtWHlSV2NsQVJQYjJ4Nmc1V1d2OXFTdmNRekw0bjIyRG9XaUY0YXdTZDRTCkJhdGI1MVJVcDFNRDlUdTdnbHlFbFJ6bVFUa0dGK1R1SDAzZEhhZ0NnQXBmWDlGQlF3ZXo5K2MvL1Y4SDVyL3MKTjJ2T1IrOTRBUUc3NmxXdDJjSUdjOXQyaHNzPQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg==</prv>
+		<crt>LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVsRENDQTN5Z0F3SUJBZ0lJUzFveWk3NTZSYmN3RFFZSktvWklodmNOQVFFTEJRQXdXakU0TURZR0ExVUUKQ2hNdmNHWlRaVzV6WlNCM1pXSkRiMjVtYVdkMWNtRjBiM0lnVTJWc1ppMVRhV2R1WldRZ1EyVnlkR2xtYVdOaApkR1V4SGpBY0JnTlZCQU1URlhCbVUyVnVjMlV0TmpVelltTTVZamd3WldFNE9UQWVGdzB5TXpFd01qY3hORE14Ck1qQmFGdzB5TkRFeE1qZ3hORE14TWpCYU1Gb3hPREEyQmdOVkJBb1RMM0JtVTJWdWMyVWdkMlZpUTI5dVptbG4KZFhKaGRHOXlJRk5sYkdZdFUybG5ibVZrSUVObGNuUnBabWxqWVhSbE1SNHdIQVlEVlFRREV4VndabE5sYm5ObApMVFkxTTJKak9XSTRNR1ZoT0Rrd2dnRWlNQTBHQ1NxR1NJYjNEUUVCQVFVQUE0SUJEd0F3Z2dFS0FvSUJBUURKClU4RkxaakZvQnRFNXp3d045MkdWUm1zb1B2WXJJbGdFbUc2REdqbHozeWw2K0JPSU1tQ3VreDNIZUNtdWdzYS8KelRYbCtxdHdCRUtjZlBhcHNhOHVwVUFQMDAwMmk4MHZZYTB2Q2UvbVY0a1J1bThtdHVFQStRcktxQ05Nbkl3UApGTS9CS2NuMHR0dTN3OS90KzNZUFNoTVNqTnFZNE8vZjgwK0N4czZHWFo3LzMyVm9zRmhlbDVYUndTSEZzT2dLCjRVNkhLMEcyZmxGL1cxaXBoLzlwUit0bVA3OGhGcDI3S0hpckRpQWNxMjNqSEZEeFowd2pQUDBONWs4YUJiQk4KZTlIWU1UMTdSS3E2L1BYVWtLMFVWNmU1U0FoYkJEd3NGM3RUc0pDNDJ4Rzd6aEFZZUNqY0crVEZiV01weklPaQpnWHA1Mk8wckxRSjFuaUxYTGlOeEFnTUJBQUdqZ2dGY01JSUJXREFKQmdOVkhSTUVBakFBTUJFR0NXQ0dTQUdHCitFSUJBUVFFQXdJR1FEQUxCZ05WSFE4RUJBTUNCYUF3TXdZSllJWklBWWI0UWdFTkJDWVdKRTl3Wlc1VFUwd2cKUjJWdVpYSmhkR1ZrSUZObGNuWmxjaUJEWlhKMGFXWnBZMkYwWlRBZEJnTlZIUTRFRmdRVTNBNDRMSG96d1RJNAp5L1pTL2N3eUpXWkZkOUF3Z1lzR0ExVWRJd1NCZ3pDQmdJQVUzQTQ0TEhvendUSTR5L1pTL2N3eUpXWkZkOUNoClhxUmNNRm94T0RBMkJnTlZCQW9UTDNCbVUyVnVjMlVnZDJWaVEyOXVabWxuZFhKaGRHOXlJRk5sYkdZdFUybG4KYm1Wa0lFTmxjblJwWm1sallYUmxNUjR3SEFZRFZRUURFeFZ3WmxObGJuTmxMVFkxTTJKak9XSTRNR1ZoT0RtQwpDRXRhTW91K2VrVzNNQ2NHQTFVZEpRUWdNQjRHQ0NzR0FRVUZCd01CQmdnckJnRUZCUWNEQWdZSUt3WUJCUVVJCkFnSXdJQVlEVlIwUkJCa3dGNElWY0daVFpXNXpaUzAyTlROaVl6bGlPREJsWVRnNU1BMEdDU3FHU0liM0RRRUIKQ3dVQUE0SUJBUUJhMVdvZ3NSMzZJVys0TU10RC9IWThDeE9vN1pvdmZsRnB5WWVLRFJKemFrT0Jkbnh5VGkvVQpEdTZmcmxqTGVONXJOYklQQ1ZXN1YwYjgrNTkyenlJUEJYQWZVRWYya2FnanVmR1F2RTF2aTdkRmdrbTNiNjJJCjV0TngvcFp4MmVrdFZ2cDl2VWUrckF0OHVrRkxPcGtLYklvTVZQdDZtMEdjZUhSR2ZEU2Z5WjdteFowQ1NOVEgKcks1azRFODdqWWw3S3VacDU5YmdJeXNlTDBSdDFHcXU0anFZYUpaUW5rMzRCMDRuWnFXY3NXQ2hTSVphK1BiTwpQS0M1OEhIUHRQWVFaUHZkQmVDVm9ZMnNESEhSMzlsQklNUlNsRys2Qk9wVU83LzhxU0RmSWNFNERQSG1BZGs3CmUyWWdCeUdiR0xBN0ZVakk2UjlUYUpoMTMzZWdOcFFqCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K</crt>
+		<prv>LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUV2d0lCQURBTkJna3Foa2lHOXcwQkFRRUZBQVNDQktrd2dnU2xBZ0VBQW9JQkFRREpVOEZMWmpGb0J0RTUKend3TjkyR1ZSbXNvUHZZcklsZ0VtRzZER2psejN5bDYrQk9JTW1DdWt4M0hlQ211Z3NhL3pUWGwrcXR3QkVLYwpmUGFwc2E4dXBVQVAwMDAyaTgwdllhMHZDZS9tVjRrUnVtOG10dUVBK1FyS3FDTk1uSXdQRk0vQktjbjB0dHUzCnc5L3QrM1lQU2hNU2pOcVk0Ty9mODArQ3hzNkdYWjcvMzJWb3NGaGVsNVhSd1NIRnNPZ0s0VTZISzBHMmZsRi8KVzFpcGgvOXBSK3RtUDc4aEZwMjdLSGlyRGlBY3EyM2pIRkR4WjB3alBQME41azhhQmJCTmU5SFlNVDE3UktxNgovUFhVa0swVVY2ZTVTQWhiQkR3c0YzdFRzSkM0MnhHN3poQVllQ2pjRytURmJXTXB6SU9pZ1hwNTJPMHJMUUoxCm5pTFhMaU54QWdNQkFBRUNnZ0VCQUxmT3lmbEcwZkRCMkovSTBwNmxydWdVcEp6WDd2UXVwT0Y5TWRoc1J1dnQKWVBldUtsYjhkNXlySUZNTytDOGxvc05XWGRFY2JRMFdOcUtjeks3ZFZLMW5uZmRVMlhmbFoyM001Y3ErYmRLRgpOTldFdXhwRGVXWGorZUJRWmZuNkt6MVJxT1FZZlJQNUp0eTk3bUplWk1sTXZlRC96RXdyZ1pXYmxJbzNiRExyCkJEbUFnbmZnNEdzTE1LbWZna3dJZjAwOFcyN2xVOS9zd2dKZWkyUHQrVmd0ZlkzbDFhaW5qVytsOTFlczZSbjMKWUU5cmZnY0dXTHhNdDN3UVgyaGZmQXJ3NlE5bUhDeDB5TEdQVGtrd1RHaGpYdGJPMGZpU1pXa3dLZGQ2ZkxqSgp6U3pjdHplSGtsNWRKQ011VCtibWJXZ3pRL21nMDNQSG42c1VRdkd2ZVdFQ2dZRUE1cGxYRGdodUdZTmoyTVBKCjRPcjhkc2w3WEFHNktxTEJ5REwyNDBzZmFZL3pmSFNuR1hlUkNFOFFuQUlCWmdYSmNtUlVUL09rUlZCaDREQU4KZEdLRkVDU2RVU2V3UnV1Rm0rNGE0bm1PZ3kzdWxuSno3bHM4ZUxJREpqSDJuNnowUG5xWDhIOEhpcTdIV3EzaQoxREhoWFFzNFUvbWtwbXFwZVdJMUVtdHA3QzBDZ1lFQTM0RDZxYjU5eUs4dndJODMvTWtIL3ZHTHNyQnR6UXVKClFTUVJ4ZXdrRnZCMjRwR1NlSW43Nnd3TlNqRUxqMUZWYUIxUEtnZEl2MytNRnZlc09TaEZmSUpqYy9KZTM3UU0Kc3YyZnN4WkkzUWVOZXhtMWVRS2NjcldFcWg4WkVha01ncXVwTzJJSHFIWitwNldBQlNsRDhneFo3aEJDREd6RApBNEdvd1B5S2F0VUNnWUVBaUJYdVBpWFRjOU1LVlo0VndWcHI2MTQwSXJRU1BaOFhaU0pPZVF5WVdSL092Wi9LCkRVbDJtY1N2TktJcVdSOEpKeXoyWk1pUUpTZXUyek1BZmJLMmZEUmZjc2xOU2swcjZEMjROL2NzbDFXLys2RkgKc1Y2K2JTd0FsOFhjbVpiai9RczBKNFdQMmRRVGFmdzhaS1diTGVHMU9EbVhaVzZFM1ZHTHFIY2paM0VDZ1lFQQpva0VIT0IxVFFWSjByeTBKcnhqZUZpV1NqZmxvN05jNElETW9OL0F6VHZmb3hwaDVwY28rT1NlNXFpZXF4Yk44CjlpVjQ2QUQ3dmhIQlNKY3F6eCsrT2lLS1FvMHNkT2hINDlVZGo2eFkzeVR4Zi9Gcy9kbDRiQW44c21mN0VnZ1EKVGZpQzFkcFh4dU9uRk51ZjhaOUFkVUtrTXFCWTRwNCtnSmdyUTFiU3diVUNnWUF3L0hNWTA1R0NoN3VoNTdmMgpaeDg1NzcyYk51WVVhWUJnN1l1a0lNR2s5K0JFSjRqRGJDazFHeEoxdDBRVEJlbmdBcGdGcU52bUQ5WWFJL1dWClN4eEtmUG9TcHljT1ZRU2dHNUhDOXpQbHF1RFkxdm56ajhROXFsQnM1WG9nUGY2OWZqekoxd1VmRWl5WXVJa04KSVZWQ215QnFRRk9jZng5SFhqUEx4alA4aHc9PQotLS0tLUVORCBQUklWQVRFIEtFWS0tLS0tCg==</prv>
 	</cert>
 	<ppps></ppps>
 	<installedpackages>
@@ -722,11 +744,11 @@
 			<config>
 				<enable>on</enable>
 				<adjacencylog></adjacencylog>
-				<routerid>192.168.1.1</routerid>
+				<routerid>100.68.26.1</routerid>
 				<spfholdtime></spfholdtime>
 				<spfdelay></spfdelay>
 				<enablesnmpagentx></enablesnmpagentx>
-				<defaultarea>0.0.0.0</defaultarea>
+				<defaultarea></defaultarea>
 				<defaultareatype>none</defaultareatype>
 				<row>
 					<routevalue></routevalue>
@@ -791,21 +813,14 @@
 				<filterlist_in>none</filterlist_in>
 			</config>
 		</frrospfdareas>
-		<frrospfdneighbors>
-			<config>
-				<neighbor>192.168.1.2</neighbor>
-				<descr></descr>
-				<priority></priority>
-				<pollinginterval></pollinginterval>
-			</config>
-		</frrospfdneighbors>
+		<frrospfdneighbors></frrospfdneighbors>
 		<frrospfdinterfaces>
 			<config>
-				<interface>lan</interface>
+				<interface>wan</interface>
 				<descr></descr>
 				<networktype></networktype>
 				<passive></passive>
-				<mtuignore></mtuignore>
+				<mtuignore>on</mtuignore>
 				<metric></metric>
 				<interfacearea>0.0.0.0</interfacearea>
 				<acceptfilter></acceptfilter>
@@ -819,7 +834,7 @@
 				<bfdenable></bfdenable>
 			</config>
 			<config>
-				<interface>wan</interface>
+				<interface>lan</interface>
 				<descr></descr>
 				<networktype></networktype>
 				<passive></passive>
@@ -849,8 +864,20 @@
 				<pkgloglevel>0</pkgloglevel>
 				<enablesnmpagentx></enablesnmpagentx>
 				<row>
-					<routevalue></routevalue>
-					<routetarget>none</routetarget>
+					<routevalue>100.68.0.0/16</routevalue>
+					<routetarget>if|opt2</routetarget>
+				</row>
+				<row>
+					<routevalue>10.68.0.0/16</routevalue>
+					<routetarget>if|opt2</routetarget>
+				</row>
+				<row>
+					<routevalue>100.68.0.0/16</routevalue>
+					<routetarget>if|lan</routetarget>
+				</row>
+				<row>
+					<routevalue>10.68.0.0/16</routevalue>
+					<routetarget>if|lan</routetarget>
 				</row>
 				<nht>none</nht>
 				<service_force_restart></service_force_restart>
