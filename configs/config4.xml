@@ -38,8 +38,9 @@
 			<protocol>http</protocol>
 			<loginautocomplete></loginautocomplete>
 			<ssl-certref>65551d86013a8</ssl-certref>
-			<althostnames></althostnames>
 			<dashboardcolumns>2</dashboardcolumns>
+			<max_procs>10</max_procs>
+			<nohttpreferercheck></nohttpreferercheck>
 		</webgui>
 		<disablenatreflection>yes</disablenatreflection>
 		<disablesegmentationoffloading></disablesegmentationoffloading>
@@ -60,6 +61,8 @@
 		<dnsserver>8.8.8.8</dnsserver>
 		<dnsserver>1.1.1.1</dnsserver>
 		<timezone>America/New_York</timezone>
+		<serialspeed>115200</serialspeed>
+		<primaryconsole>video</primaryconsole>
 	</system>
 	<interfaces>
 		<wan>
@@ -90,6 +93,14 @@
 			<gateway></gateway>
 			<gatewayv6></gatewayv6>
 		</lan>
+		<opt1>
+			<descr><![CDATA[InternalNetwork]]></descr>
+			<if>vtnet2</if>
+			<enable></enable>
+			<ipaddr>1.0.0.1</ipaddr>
+			<subnet>8</subnet>
+			<spoofmac></spoofmac>
+		</opt1>
 	</interfaces>
 	<staticroutes></staticroutes>
 	<dhcpd>
@@ -99,6 +110,41 @@
 				<to>22.33.44.245</to>
 			</range>
 		</lan>
+		<opt1>
+			<range>
+				<from>1.0.0.1</from>
+				<to>1.255.255.250</to>
+			</range>
+			<enable></enable>
+			<failover_peerip></failover_peerip>
+			<defaultleasetime></defaultleasetime>
+			<maxleasetime></maxleasetime>
+			<netmask></netmask>
+			<dnsserver>8.8.8.8</dnsserver>
+			<gateway></gateway>
+			<domain></domain>
+			<domainsearchlist></domainsearchlist>
+			<ddnsdomain></ddnsdomain>
+			<ddnsdomainprimary></ddnsdomainprimary>
+			<ddnsdomainsecondary></ddnsdomainsecondary>
+			<ddnsdomainkeyname></ddnsdomainkeyname>
+			<ddnsdomainkeyalgorithm>hmac-md5</ddnsdomainkeyalgorithm>
+			<ddnsdomainkey></ddnsdomainkey>
+			<mac_allow></mac_allow>
+			<mac_deny></mac_deny>
+			<ddnsclientupdates>allow</ddnsclientupdates>
+			<tftp></tftp>
+			<ldap></ldap>
+			<nextserver></nextserver>
+			<filename></filename>
+			<filename32></filename32>
+			<filename64></filename64>
+			<filename32arm></filename32arm>
+			<filename64arm></filename64arm>
+			<uefihttpboot></uefihttpboot>
+			<rootpath></rootpath>
+			<numberoptions></numberoptions>
+		</opt1>
 	</dhcpd>
 	<dhcpdv6>
 		<lan>
@@ -132,6 +178,7 @@
 		<separator>
 			<lan></lan>
 			<wan></wan>
+			<opt1></opt1>
 		</separator>
 		<rule>
 			<id></id>
@@ -166,39 +213,6 @@
 		</rule>
 		<rule>
 			<id></id>
-			<tracker>1700079226</tracker>
-			<type>pass</type>
-			<interface>wan</interface>
-			<ipprotocol>inet</ipprotocol>
-			<tag></tag>
-			<tagged></tagged>
-			<max></max>
-			<max-src-nodes></max-src-nodes>
-			<max-src-conn></max-src-conn>
-			<max-src-states></max-src-states>
-			<statetimeout></statetimeout>
-			<statetype><![CDATA[keep state]]></statetype>
-			<os></os>
-			<protocol>tcp/udp</protocol>
-			<source>
-				<address>100.68.250.102/26</address>
-			</source>
-			<destination>
-				<address>1.2.3.4/8</address>
-				<port>22</port>
-			</destination>
-			<descr></descr>
-			<updated>
-				<time>1700079226</time>
-				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
-			</updated>
-			<created>
-				<time>1700079226</time>
-				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
-			</created>
-		</rule>
-		<rule>
-			<id></id>
 			<tracker>1700079107</tracker>
 			<type>pass</type>
 			<interface>lan</interface>
@@ -226,6 +240,70 @@
 			<created>
 				<time>1700079107</time>
 				<username><![CDATA[admin@22.33.44.102 (Local Database)]]></username>
+			</created>
+		</rule>
+		<rule>
+			<id></id>
+			<tracker>1700502519</tracker>
+			<type>pass</type>
+			<interface>opt1</interface>
+			<ipprotocol>inet</ipprotocol>
+			<tag></tag>
+			<tagged></tagged>
+			<max></max>
+			<max-src-nodes></max-src-nodes>
+			<max-src-conn></max-src-conn>
+			<max-src-states></max-src-states>
+			<statetimeout></statetimeout>
+			<statetype><![CDATA[keep state]]></statetype>
+			<os></os>
+			<protocol>tcp</protocol>
+			<source>
+				<address>100.68.250.0/24</address>
+			</source>
+			<destination>
+				<address>1.0.0.0/8</address>
+				<port>22</port>
+			</destination>
+			<descr></descr>
+			<updated>
+				<time>1700502519</time>
+				<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
+			</updated>
+			<created>
+				<time>1700502519</time>
+				<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
+			</created>
+		</rule>
+		<rule>
+			<id></id>
+			<tracker>1700502742</tracker>
+			<type>pass</type>
+			<interface>opt1</interface>
+			<ipprotocol>inet</ipprotocol>
+			<tag></tag>
+			<tagged></tagged>
+			<max></max>
+			<max-src-nodes></max-src-nodes>
+			<max-src-conn></max-src-conn>
+			<max-src-states></max-src-states>
+			<statetimeout></statetimeout>
+			<statetype><![CDATA[keep state]]></statetype>
+			<os></os>
+			<source>
+				<any></any>
+			</source>
+			<destination>
+				<any></any>
+			</destination>
+			<descr></descr>
+			<updated>
+				<time>1700502742</time>
+				<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
+			</updated>
+			<created>
+				<time>1700502742</time>
+				<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
 			</created>
 		</rule>
 	</filter>
@@ -350,9 +428,8 @@
 	<vlans></vlans>
 	<qinqs></qinqs>
 	<revision>
-		<time>1700143705</time>
-		<description><![CDATA[(system): Installed FRR package.]]></description>
-		<username><![CDATA[(system)]]></username>
+		<time>1700503957</time>
+		<username><![CDATA[admin@172.16.1.201 (Local Database)]]></username>
 	</revision>
 	<gateways>
 		<gateway_item>
@@ -531,6 +608,121 @@
 			<executable>watchfrr</executable>
 			<description><![CDATA[FRR watchfrr watchdog daemon]]></description>
 		</service>
+		<frrospfd>
+			<config>
+				<enable>on</enable>
+				<adjacencylog></adjacencylog>
+				<routerid></routerid>
+				<spfholdtime></spfholdtime>
+				<spfdelay></spfdelay>
+				<enablesnmpagentx></enablesnmpagentx>
+				<defaultarea>0.0.0.0</defaultarea>
+				<defaultareatype>none</defaultareatype>
+				<row>
+					<routevalue></routevalue>
+					<routearea></routearea>
+				</row>
+				<redistributeconnectedsubnets></redistributeconnectedsubnets>
+				<redistributeconnectedsubnets_metric></redistributeconnectedsubnets_metric>
+				<redistributeconnectedsubnets_metrictype></redistributeconnectedsubnets_metrictype>
+				<redistributeconnectedsubnets_routemap>none</redistributeconnectedsubnets_routemap>
+				<redistributeconnectedsubnets_distlist>none</redistributeconnectedsubnets_distlist>
+				<redistributekernel></redistributekernel>
+				<redistributekernel_metric></redistributekernel_metric>
+				<redistributekernel_metrictype></redistributekernel_metrictype>
+				<redistributekernel_routemap>none</redistributekernel_routemap>
+				<redistributekernel_distlist>none</redistributekernel_distlist>
+				<redistributebgp></redistributebgp>
+				<redistributebgp_metric></redistributebgp_metric>
+				<redistributebgp_metrictype></redistributebgp_metrictype>
+				<redistributebgp_routemap>none</redistributebgp_routemap>
+				<redistributebgp_distlist>none</redistributebgp_distlist>
+				<redistributerip></redistributerip>
+				<redistributerip_metric></redistributerip_metric>
+				<redistributerip_metrictype></redistributerip_metrictype>
+				<redistributerip_routemap>none</redistributerip_routemap>
+				<redistributerip_distlist>none</redistributerip_distlist>
+				<redistributestatic></redistributestatic>
+				<redistributestatic_metric></redistributestatic_metric>
+				<redistributestatic_metrictype></redistributestatic_metrictype>
+				<redistributestatic_routemap>none</redistributestatic_routemap>
+				<redistributestatic_distlist>none</redistributestatic_distlist>
+				<redistributedefaultroute></redistributedefaultroute>
+				<redistributedefaultroute_always></redistributedefaultroute_always>
+				<redistributedefaultroute_metric></redistributedefaultroute_metric>
+				<redistributedefaultroute_metrictype></redistributedefaultroute_metrictype>
+				<redistributedefaultroute_routemap>none</redistributedefaultroute_routemap>
+				<rfc1583></rfc1583>
+				<opaquelsa></opaquelsa>
+				<referencebandwidth></referencebandwidth>
+				<max_metric_administrative></max_metric_administrative>
+				<max_metric_startup></max_metric_startup>
+				<max_metric_shutdown></max_metric_shutdown>
+				<writemultiplier></writemultiplier>
+				<abrtype>cisco</abrtype>
+			</config>
+		</frrospfd>
+		<frr>
+			<config>
+				<enable>on</enable>
+				<routerid>1.0.0.1</routerid>
+				<password><![CDATA[password1!]]></password>
+				<passwordencrypt></passwordencrypt>
+				<ignoreipsecrestart></ignoreipsecrestart>
+				<carpstatusvid>none</carpstatusvid>
+				<logging></logging>
+				<pkgloglevel>0</pkgloglevel>
+				<enablesnmpagentx></enablesnmpagentx>
+				<row>
+					<routevalue>100.68.0.0/16</routevalue>
+					<routetarget>if|opt1</routetarget>
+				</row>
+				<row>
+					<routevalue>10.65.0.0/16</routevalue>
+					<routetarget>if|opt1</routetarget>
+				</row>
+				<nht>none</nht>
+				<service_force_restart></service_force_restart>
+			</config>
+		</frr>
+		<frrospfdinterfaces>
+			<config>
+				<interface>wan</interface>
+				<descr></descr>
+				<networktype></networktype>
+				<passive></passive>
+				<mtuignore></mtuignore>
+				<metric></metric>
+				<interfacearea>0.0.0.0</interfacearea>
+				<acceptfilter></acceptfilter>
+				<authtype></authtype>
+				<password></password>
+				<routerpriorityelections></routerpriorityelections>
+				<retransmitinterval></retransmitinterval>
+				<hellointervalinseconds></hellointervalinseconds>
+				<deadtimer></deadtimer>
+				<minimalhello></minimalhello>
+				<bfdenable></bfdenable>
+			</config>
+			<config>
+				<interface>opt1</interface>
+				<descr></descr>
+				<networktype></networktype>
+				<passive></passive>
+				<mtuignore></mtuignore>
+				<metric></metric>
+				<interfacearea>0.0.0.0</interfacearea>
+				<acceptfilter></acceptfilter>
+				<authtype></authtype>
+				<password></password>
+				<routerpriorityelections></routerpriorityelections>
+				<retransmitinterval></retransmitinterval>
+				<hellointervalinseconds></hellointervalinseconds>
+				<deadtimer></deadtimer>
+				<minimalhello></minimalhello>
+				<bfdenable></bfdenable>
+			</config>
+		</frrospfdinterfaces>
 	</installedpackages>
 	<sysctl>
 		<item>
